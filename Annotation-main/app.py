@@ -29,7 +29,11 @@ def main():
 
     st.write(font_css, unsafe_allow_html=True)
  
-
+# UI Options  
+    if tabs == 'Annotate Image':
+        cartoonization()
+    if tabs == 'Resize Image':
+        resizeImg()
 
 def uploadImage(key, new_height=480):
 
@@ -44,11 +48,7 @@ def uploadImage(key, new_height=480):
     
     return cv2.cvtColor(preProcessImg(cv2.imread('sample.jpg'),new_height),cv2.COLOR_BGR2RGB)
 
- # UI Options  
-    if tabs == 'Annotate Image':
-        cartoonization()
-    if tabs == 'Resize Image':
-        resizeImg()
+ 
 
 def preProcessImg(img, new_height=480):
     # Pre-processing image: resize image
