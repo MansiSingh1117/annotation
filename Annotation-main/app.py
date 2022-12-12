@@ -70,7 +70,7 @@ def cartoonization():
     plt.show()
 
 #Creating edge mask
-    edges=cv2.adaptiveThreshold(img1b,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,3,3)
+    edges=cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,3,3)
     plt.imshow(edges,cmap='gray')
     plt.axis("off")
     plt.title("Edge Mask")
