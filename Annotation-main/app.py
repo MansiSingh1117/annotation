@@ -81,12 +81,12 @@ def cartoonization():
     plt.show()
 
 #Clustering - (K-MEANS)
-    imgf=np.float32(img1).reshape(-1,3)
+    imgf=np.float32(img).reshape(-1,3)
     criteria=(cv2.TERM_CRITERIA_EPS+cv2.TERM_CRITERIA_MAX_ITER,20,1.0)
     compactness,label,center=cv2.kmeans(imgf,5,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
     center=np.uint8(center)
     final_img=center[label.flatten()]
-    final_img=final_img.reshape(img1.shape)
+    final_img=final_img.reshape(img.shape)
 
     final=cv2.bitwise_and(final_img,final_img,mask=edges)
     plt.imshow(final,cmap='gray')
