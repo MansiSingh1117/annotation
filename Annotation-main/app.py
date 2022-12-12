@@ -70,11 +70,11 @@ def cartoonization():
     plt.show()
 
 #Creating edge mask
-    edges=cv2.threshold(img1b,230,255,cv2.THRESH_BINARY_INV)
-    plt.imshow(edges,cmap='gray')
-    plt.axis("off")
-    plt.title("Edge Mask")
-    plt.show()
+    #edges=cv2.adaptiveThreshold(img1b,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,3,3)
+    #plt.imshow(edges,cmap='gray')
+    #plt.axis("off")
+    #plt.title("Edge Mask")
+    #plt.show()
 
 
 
@@ -97,9 +97,9 @@ def cartoonization():
     final_img=center[label.flatten()]
     final_img=final_img.reshape(img.shape)
 
-    final=cv2.bitwise_and(final_img,final_img,mask=edges)
-    plt.imshow(final,cmap='gray')
-    plt.axis("off")
+    #final=cv2.bitwise_and(final_img,final_img,mask=edges)
+    #plt.imshow(final,cmap='gray')
+    #plt.axis("off")
     plt.savefig('output1', bbox_inches='tight')
 
     plt.show()
