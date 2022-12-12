@@ -46,7 +46,7 @@ def uploadImage(key, new_height=480):
         # Pre-processing image: resize image
         return preProcessImg(img, new_height)
     
-    return cv2.cvtColor(preProcessImg(cv2.imread('sample.jpg'),new_height),cv2.COLOR_BGR2RGB)
+    return cv2.cvtColor(preProcessImg(cv2.imread('natalie.jpg'),new_height),cv2.COLOR_BGR2RGB)
 
  
 
