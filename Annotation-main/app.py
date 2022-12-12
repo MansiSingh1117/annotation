@@ -32,8 +32,8 @@ def main():
 # UI Options  
     
     cartoonization()
-    if tabs == 'Resize Image':
-        resizeImg()
+
+    resizeImg()
 
 def uploadImage(key, new_height=480):
 
