@@ -107,6 +107,7 @@ def cartoonization():
     #plt.imshow(final,cmap='gray')
     #plt.axis("off")
     plt.savefig('output1', bbox_inches='tight')
+    st.image(final_img)
 
     plt.show()
     
