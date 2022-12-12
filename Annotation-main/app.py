@@ -28,6 +28,11 @@ def main():
         """
 
     st.write(font_css, unsafe_allow_html=True)
+    tabs = st.sidebar.selectbox(
+        'Choose one of the following',
+        ('Annotate Image','Resize Image'),
+        key="main_menu"
+    )
  
 # UI Options  
     
