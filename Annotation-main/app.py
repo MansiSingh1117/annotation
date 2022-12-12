@@ -28,7 +28,7 @@ def main():
         """
 
     st.write(font_css, unsafe_allow_html=True)
-    stleTransfer()
+ 
 
 
 def uploadImage(key, new_height=480):
