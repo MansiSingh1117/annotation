@@ -30,8 +30,8 @@ def main():
     st.write(font_css, unsafe_allow_html=True)
  
 # UI Options  
-    if tabs == 'Annotate Image':
-        cartoonization()
+    
+    cartoonization()
     if tabs == 'Resize Image':
         resizeImg()
 
