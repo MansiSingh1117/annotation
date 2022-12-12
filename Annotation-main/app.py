@@ -1,42 +1,37 @@
+# -*- coding: utf-8 -*-
 # Import required libraries
 
 import cv2
 import numpy as np
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas
-from PIL import Image
 import requests
 import os
+import functools
+from matplotlib import gridspec
+import matplotlib.pylab as plt
+import tensorflow as tf
+import tensorflow_hub as hub
+import sys
+import imageio
 
 # Home UI 
 
 def main():
 
-    st.set_page_config(
-        layout="wide"
-    )
+    st.set_page_config(layout="wide")
 
-    tabs = st.sidebar.selectbox(
-        'Choose one of the following',
-        ('Annotate Image','Resize Image'),
-        key="main_menu"
-    )
+    font_css = """
+        <style>
+        button[data-baseweb="tab"] {
+        font-size: 26px;
+        }
+        </style>
+        """
 
-    # UI Options  
-    if tabs == 'Annotate Image':
-        annotateImg()
-    if tabs == 'Resize Image':
-        resizeImg()
+    st.write(font_css, unsafe_allow_html=True)
+    stleTransfer()
 
-# Pre-process Image
-def preProcessImg(img, new_height=480):
-    # Pre-processing image: resize image
-    height, width, _ = img.shape
-    width = int(new_height/height*width)
-    img = cv2.resize(img,(width,new_height))
-    return img
 
-# Upload Image
 def uploadImage(key, new_height=480):
 
     uploaded_file = st.file_uploader("Choose a Image file",key=key)
@@ -44,44 +39,68 @@ def uploadImage(key, new_height=480):
         file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
         img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
         img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-
+        
         # Pre-processing image: resize image
         return preProcessImg(img, new_height)
     
     return cv2.cvtColor(preProcessImg(cv2.imread('sample.jpg'),new_height),cv2.COLOR_BGR2RGB)
 
-# About Me UI 
-def annotateImg():
+ # UI Options  
+    if tabs == 'Annotate Image':
+        cartoonization()
+    if tabs == 'Resize Image':
+        resizeImg()
+
+def preProcessImg(img, new_height=480):
+    # Pre-processing image: resize image
+    img = cv2.resize(img,(256,256))
+    return img
+
+
+
+    
+def cartoonization():
     st.header("Annotate Image")
 
     img = uploadImage("annotation_img")
+    #Bilateral Blurring
+    img1b=cv2.bilateralFilter(img1g,3,75,75)
+    plt.imshow(img1b,cmap='gray')
+    plt.axis("off")
+    plt.title("AFTER BILATERAL BLURRING")
+    plt.show()
 
-    # Specify canvas parameters in application
-    drawing_mode = st.sidebar.selectbox(
-        "Drawing tool:", ( "rect", "point", "freedraw", "line", "circle", "transform")
-    )
+#Creating edge mask
+    edges=cv2.adaptiveThreshold(img1b,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,3,3)
+    plt.imshow(edges,cmap='gray')
+    plt.axis("off")
+    plt.title("Edge Mask")
+    plt.show()
 
-    stroke_width = st.sidebar.slider("Stroke width: ", 1, 25, 3)
-    if drawing_mode == 'point':
-        point_display_radius = st.sidebar.slider("Point display radius: ", 1, 25, 3)
-    stroke_color = st.sidebar.color_picker("Stroke color hex: ", "#5FCE42")
+#Eroding and Dilating
+    kernel=np.ones((3,3),np.uint8)
+    img1e=cv2.erode(img1b,kernel,iterations=5)
+    img1d=cv2.dilate(img1e,kernel,iterations=5)
+    plt.imshow(img1d,cmap='gray')
+    plt.axis("off")
+    plt.title("AFTER ERODING AND DILATING")
+    plt.show()
 
-    realtime_update = st.sidebar.checkbox("Update in realtime", True)
+#Clustering - (K-MEANS)
+    imgf=np.float32(img1).reshape(-1,3)
+    criteria=(cv2.TERM_CRITERIA_EPS+cv2.TERM_CRITERIA_MAX_ITER,20,1.0)
+    compactness,label,center=cv2.kmeans(imgf,5,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
+    center=np.uint8(center)
+    final_img=center[label.flatten()]
+    final_img=final_img.reshape(img1.shape)
 
-    # Create a canvas component
-    st_canvas(
-        fill_color="rgba(0, 0, 0, 0)",  # Fixed fill color with some opacity
-        stroke_width=stroke_width,
-        stroke_color=stroke_color,
-        background_image=Image.fromarray(img),
-        update_streamlit=realtime_update,
-        height=img.shape[0],
-        width=img.shape[1],
-        drawing_mode=drawing_mode,
-        point_display_radius=point_display_radius if drawing_mode == 'point' else 0,
-        key="annotation_canvas",
-    )
+    final=cv2.bitwise_and(final_img,final_img,mask=edges)
+    plt.imshow(final,cmap='gray')
+    plt.axis("off")
+    plt.savefig('output1', bbox_inches='tight')
 
+    plt.show()
+    
 def resizeImg():
     st.header("Resize Image")
 
@@ -92,6 +111,8 @@ def resizeImg():
 
     st.image(scaledImg)
     pass
+
+
 
 if __name__ == "__main__":
     main()
