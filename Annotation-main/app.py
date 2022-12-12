@@ -30,7 +30,7 @@ def main():
     st.write(font_css, unsafe_allow_html=True)
     tabs = st.sidebar.selectbox(
         'Choose one of the following',
-        ('Annotate Image','Resize Image'),
+        ('Cartoonized Image','Resize Image'),
         key="main_menu"
     )
  
@@ -64,7 +64,7 @@ def preProcessImg(img, new_height=480):
 
     
 def cartoonization():
-    st.header("Annotate Image")
+    st.header("Cartoonized Image")
 
     img = uploadImage("annotation_img")
     #Bilateral Blurring
