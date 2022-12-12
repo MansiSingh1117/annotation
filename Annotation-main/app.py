@@ -74,8 +74,10 @@ def cartoonization():
     plt.title("AFTER BILATERAL BLURRING")
     plt.show()
 
+    img_grey=cv2.cvtColor(img1b,cv2.COLOR_BGR2GRAY)
+
 #Creating edge mask
-    #edges=cv2.adaptiveThreshold(img1b,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,3,3)
+    #edges=cv2.adaptiveThreshold(img_grey,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,3,3)
     #plt.imshow(edges,cmap='gray')
     #plt.axis("off")
     #plt.title("Edge Mask")
