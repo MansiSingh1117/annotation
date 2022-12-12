@@ -68,7 +68,7 @@ def cartoonization():
     
 
     img = uploadImage("annotation_img")
-    st.title("Input image")
+    st.subheader("Input Image")
     st.image(img)
     #Bilateral Blurring
     img1b=cv2.bilateralFilter(img,3,75,75)
@@ -112,7 +112,7 @@ def cartoonization():
     #plt.imshow(final,cmap='gray')
     #plt.axis("off")
     plt.savefig('output1', bbox_inches='tight')
-    st.title("cartoonized image")
+    st.subheader("Cartoonized Image")
     st.image(final_img)
 
     plt.show()
