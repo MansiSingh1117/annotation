@@ -57,7 +57,7 @@ def uploadImage(key, new_height=480):
 
 def preProcessImg(img, new_height=480):
     # Pre-processing image: resize image
-    img = cv2.resize(img,(300,300))
+    #img = cv2.resize(img,(300,300))
     return img
 
 
