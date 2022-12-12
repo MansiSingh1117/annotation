@@ -38,7 +38,7 @@ def main():
     
     cartoonization()
 
-    resizeImg()
+   
 
 def uploadImage(key, new_height=480):
 
@@ -113,16 +113,7 @@ def cartoonization():
 
     plt.show()
     
-def resizeImg():
-    st.header("Resize Image")
 
-    img = uploadImage("resize_img")
-
-    scaleFactor = st.slider("Times Image",1,10,1,1,key='resize')/5
-    scaledImg = cv2.resize(img, None, fx=scaleFactor, fy = scaleFactor, interpolation = cv2.INTER_LINEAR)
-
-    st.image(scaledImg)
-    pass
 
 
 
