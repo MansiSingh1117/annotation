@@ -101,6 +101,7 @@ def cartoonization():
     center=np.uint8(center)
     final_img=center[label.flatten()]
     final_img=final_img.reshape(img.shape)
+    plt.imshow(final_img,cmap='gray')
 
     #final=cv2.bitwise_and(final_img,final_img,mask=edges)
     #plt.imshow(final,cmap='gray')
